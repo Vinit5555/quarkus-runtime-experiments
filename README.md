@@ -1,53 +1,55 @@
 # Quarkus Runtime-Aware Container Exploration
 
-This repository contains a Quarkus-based Java microservice designed as a
-controlled testbed for analysing runtime behaviour of enterprise Java
-applications in containerized environments.
-
-The project is intentionally minimal in business logic and structured
-to allow focused investigation of runtime characteristics under
-different container resource constraints.
+This repository contains a Quarkus-based Java microservice designed as a controlled testbed for analysing runtime behaviour of enterprise Java applications in containerised environments.
+The service is intentionally minimal in business logic and structured to enable focused investigation of runtime characteristics under varying container resource constraints.
 
 
 
 ## Motivation
 
-Modern Java workloads are increasingly deployed in Kubernetes and other
-container orchestration platforms. While container autotuning tools
-optimise CPU and memory allocations based on steady-state metrics,
-Java runtimes exhibit behaviour such as startup latency, warm-up
-effects, and dynamic memory adaptation that may not be fully captured
-by traditional tuning strategies.
+Modern Java workloads are widely deployed in Kubernetes and other container orchestration platforms. While container autotuning tools optimise CPU and memory allocations based primarily on steady-state metrics, JVM-based applications exhibit behaviours such as:
 
-This repository serves as a foundation for exploring whether runtime-
-specific characteristics of JVM-based workloads influence container
-optimisation effectiveness.
+Startup latency
+
+Warm-up effects (JIT compilation behaviour)
+
+Dynamic memory adaptation
+
+These characteristics may not be fully captured by traditional steady-state optimisation strategies.
+
+This repository serves as a foundation for exploring whether runtime-specific characteristics of JVM-based workloads influence container optimisation effectiveness.
 
 
 
 ## Research Direction
 
+
 This project aims to investigate:
 
-- Startup time behaviour of JVM-based services in constrained containers
-- Memory footprint characteristics under limited resource conditions
-- CPU allocation sensitivity for REST-based microservices
-- Whether steady-state metric-based tuning sufficiently captures
-  runtime-specific behaviour
+-Startup time behaviour of JVM-based services in constrained containers
 
-The long-term objective is to explore how container resource
-optimisation strategies might be improved by incorporating awareness
-of runtime startup and warm-up characteristics.
+-Memory footprint characteristics under limited resource conditions
+
+-CPU allocation sensitivity for REST-based microservices
+
+-Whether steady-state metric-based tuning sufficiently captures runtime-specific behaviour
+
+The longer-term objective is to explore how container resource optimisation strategies might be improved by incorporating awareness of runtime startup and warm-up characteristics.
+
 
 
 
 ## Technologies Used
 
-- Java
-- Quarkus
-- Maven
-- Docker
-- RESTful APIs
+Java
+
+Quarkus
+
+Maven
+
+Docker
+
+RESTful APIs
 
 
 
@@ -66,3 +68,20 @@ of runtime startup and warm-up characteristics.
 
 ```bash
 ./mvnw clean package
+
+## Run in Development Mode
+./mvnw quarkus:dev
+
+##Build Docker Image
+docker build -f src/main/docker/Dockerfile.jvm -t quarkus-service .
+
+##Run Container with Resource Constraints
+docker run -m 512m --cpus=1 -p 8080:8080 quarkus-service
+
+##Purpose
+
+This repository is not intended to represent a production system.
+It is designed as a focused runtime-behaviour exploration environment to support investigation into container optimisation strategies for enterprise Java workloads.
+
+
+
